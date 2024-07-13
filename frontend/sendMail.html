@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Email</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: #e9ecef;
+        }
+
+        .nav-bar {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .nav-bar a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+
+        .nav-bar a:hover {
+            color: #ffcc00;
+        }
+
+        .form-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            margin: 50px auto;
+        }
+
+        .form-container h2 {
+            margin-top: 0;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-group input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input[type="text"]:focus {
+            border-color: #007bff;
+        }
+
+
+        .form-group input[type="password"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input[type="password"]:focus {
+            border-color: #007bff;
+        }
+
+
+
+
+        .radio-group {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            font-weight: normal;
+        }
+
+        .radio-group input[type="radio"] {
+            margin-right: 8px;
+        }
+
+        .form-group button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+
+        .form-group textarea {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+            resize: vertical;
+            height: 100px;
+        }
+
+        .form-group textarea:focus {
+            border-color: #007bff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="nav-bar">
+        <a href="profile.html">Profile</a>
+        <a href="users.html">Users</a>
+        <a href="sendMail.html">SendMail</a>
+        <a href="mailInbox.html">MailInbox</a>
+    </div>
+
+    <div class="form-container">
+        <h2>Send Mail</h2>
+        <form id="sendMail">
+
+            <div class="form-group">
+                <label for="to">To:</label>
+                <input type="text" id="to" name="to" required>
+            </div>
+
+
+            <div class="form-group">
+                <label for="subject">Subject:</label>
+                <input type="text" id="subject" name="subject" required>
+            </div>
+
+
+            <div class="form-group">
+                <label for="body">Body:</label>
+                <textarea id="body" name="body" required></textarea>
+
+            </div>
+
+            <div class="form-group">
+                <label>Email Client:</label>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="emailClient" value="outlook" required> Outlook
+                    </label>
+                    <label>
+                        <input type="radio" name="emailClient" value="gmail" required> Gmail
+                    </label>
+                    <label>
+                        <input type="radio" name="emailClient" value="yahoo" required> Yahoo
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('sendMail').addEventListener('submit', async function (event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const to = document.getElementById('to').value;
+            const subject = document.getElementById('subject').value;
+            const body = document.getElementById('body').value;
+            const emailClient = document.querySelector('input[name="emailClient"]:checked').value;
+
+            try {
+                const token = localStorage.getItem('token');
+
+                const response = await fetch('http://localhost:3005/email/send', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': token
+                    },
+                    credentials: 'include', // Include credentials for session cookies or JWT tokens
+                    body: JSON.stringify({ to, subject, body, emailClient }),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('sendMail').reset();
+                    alert('Email sent successfully!');  
+                } else {
+                    alert('Failed: ' + result.message);
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        });
+    </script>
+
+</body>
+
+</html>

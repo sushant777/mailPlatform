@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<a href="/">Home</a>
+
+<body>
+    <p>Processing outlook response ...</p>
+</body>
+
+
+<script>
+    // Function to get the query parameter by name
+    function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
+
+    // Get the 'code' query parameter
+    const code = getQueryParam('code');
+
+    if (code) {
+        // Use the extracted code in a fetch request
+        fetch('http://localhost:3005/auth/verifyCodeOutLook', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                code: code,
+                username: localStorage.getItem("username"),
+                password: localStorage.getItem("password"),
+                emailClient: localStorage.getItem("emailClient")
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert('Signup successful, Proceed to login');
+                window.location.href = "login.html";
+            })
+            .catch(error => {
+                alert('Unable to Signup, Please try again');
+                console.error('Error:', error);
+                window.location.href = "index.html";
+            });
+    } else {
+        alert('Unable to Signup, Please try again');
+        console.error('Code parameter not found in the URL');
+        window.location.href = "index.html";
+    }
+</script>
+
+</html>

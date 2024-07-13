@@ -1,0 +1,32 @@
+version: '3'
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+
+
+
+  backend:
+    build: ./backend
+    container_name: backend
+    environment:
+      - PORT=3005
+      - ELASTICSEARCH_NODE=http://elasticsearch:9200
+    ports:
+      - "3005:3005"
+    depends_on:
+      - elasticsearch
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
