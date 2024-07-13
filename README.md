@@ -21,14 +21,14 @@ A simple Node.js-based project that supports multiple email clients. With this a
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/yourusername/email-manager.git
+    git clone [https://github.com/yourusername/email-manager.git](https://github.com/sushant777/mailPlatform.git)
     cd email-manager
     ```
 
 2. Install the dependencies:
 
     ```bash
-    npm install
+    docker-compose up --build
     ```
 
 ### Configuration
@@ -36,18 +36,20 @@ A simple Node.js-based project that supports multiple email clients. With this a
 1. Create a `.env` file in the root directory and add the following environment variables:
 
     ```plaintext
-    PORT=3000
-    DATABASE_URL=your_database_url
-    SESSION_SECRET=your_session_secret
+    #ELASTICSEARCH_NODE=http://localhost:9200
+    ELASTICSEARCH_NODE=http://elasticsearch:9200
+    PORT=3005
+    JWT_SECRET=your_jwt_secret
     ```
 
 2. Set up OAuth credentials for the email clients you want to support (e.g., Gmail, Outlook). Add these credentials to your `.env` file:
 
     ```plaintext
-    GMAIL_CLIENT_ID=your_gmail_client_id
-    GMAIL_CLIENT_SECRET=your_gmail_client_secret
-    OUTLOOK_CLIENT_ID=your_outlook_client_id
-    OUTLOOK_CLIENT_SECRET=your_outlook_client_secret
+    OUTLOOK_CLIENT_ID=key
+    OUTLOOK_CLIENT_SECRET_ID=key
+    OUTLOOK_CLIENT_SECRET=key
+    OUTLOOK_TENANT_ID=key
+    OUTLOOK_REDIRECT_URI=http://localhost:8080/outlookCallBack.html
     ```
 
 ### Running the Application
@@ -55,10 +57,10 @@ A simple Node.js-based project that supports multiple email clients. With this a
 1. Start the server:
 
     ```bash
-    npm start
+    docker-compose up --build
     ```
 
-2. Open your browser and go to `http://localhost:3000` to see the application in action.
+2. Open your browser and go to `http://localhost:8080` to see the application in action.
 
 ## Usage
 
