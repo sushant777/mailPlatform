@@ -33,7 +33,7 @@ A simple Node.js-based project that supports multiple email clients. With this a
 
 ### Configuration
 
-1. Create a `.env` file in the root directory and add the following environment variables:
+1. Create a `.env` file in the ./backend directory and add the following environment variables:
 
     ```plaintext
     #ELASTICSEARCH_NODE=http://localhost:9200
