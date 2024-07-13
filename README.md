@@ -11,7 +11,7 @@ A simple Node.js-based project that supports multiple email clients. With this a
 
 ## Prerequisites
 
-- [Node.js](https://nodejs.org/en/) (v12.x or later)
+- [Node.js](https://nodejs.org/en/) (v16.x or later)
 - [npm](https://www.npmjs.com/)
 
 ## Getting Started
